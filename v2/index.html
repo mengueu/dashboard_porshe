@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Dashboard de vendas Porsche — análise de faturamento, modelos, cidades e métodos de pagamento.">
+  <title>Porsche Sales Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏎️</text></svg>">
+</head>
+<body>
+
+  <!-- ═══ HEADER ═══ -->
+  <header class="header">
+    <div class="header-logo">
+      <div>
+        <div class="logo-text">Porsche</div>
+        <div class="logo-sub">Sales Dashboard</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <span class="header-date" id="header-date"></span>
+      <span class="header-badge">LIVE DATA</span>
+    </div>
+  </header>
+
+  <!-- ═══ DASHBOARD ═══ -->
+  <main class="dashboard">
+
+    <!-- KPI Cards -->
+    <div class="section-title animate-in">
+      <div class="line"></div>
+      <h2>Indicadores Principais</h2>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi-card animate-in animate-delay-1" id="kpi-card-sales">
+        <div class="kpi-icon">📊</div>
+        <div class="kpi-label">Total de Vendas</div>
+        <div class="kpi-value gold" id="kpi-total-sales">—</div>
+        <div class="kpi-detail">unidades vendidas</div>
+      </div>
+      <div class="kpi-card animate-in animate-delay-2">
+        <div class="kpi-icon">💰</div>
+        <div class="kpi-label">Receita Total</div>
+        <div class="kpi-value gold" id="kpi-total-revenue">—</div>
+        <div class="kpi-detail">faturamento acumulado</div>
+      </div>
+      <div class="kpi-card animate-in animate-delay-3">
+        <div class="kpi-icon">🎯</div>
+        <div class="kpi-label">Ticket Médio</div>
+        <div class="kpi-value gold" id="kpi-avg-ticket">—</div>
+        <div class="kpi-detail">por transação</div>
+      </div>
+      <div class="kpi-card animate-in animate-delay-4">
+        <div class="kpi-icon">🏙️</div>
+        <div class="kpi-label">Cidade Top</div>
+        <div class="kpi-value" id="kpi-top-city">—</div>
+        <div class="kpi-detail" id="kpi-top-city-detail">—</div>
+      </div>
+      <div class="kpi-card animate-in animate-delay-5">
+        <div class="kpi-icon">🏎️</div>
+        <div class="kpi-label">Modelo Mais Vendido</div>
+        <div class="kpi-value" id="kpi-top-model">—</div>
+        <div class="kpi-detail" id="kpi-top-model-detail">—</div>
+      </div>
+      <div class="kpi-card animate-in animate-delay-6">
+        <div class="kpi-icon">💳</div>
+        <div class="kpi-label">Pagamento Predominante</div>
+        <div class="kpi-value" id="kpi-top-payment">—</div>
+        <div class="kpi-detail" id="kpi-top-payment-detail">—</div>
+      </div>
+    </div>
+
+    <!-- Charts Row 1 -->
+    <div class="section-title">
+      <div class="line"></div>
+      <h2>Análise de Negócios</h2>
+    </div>
+
+    <div class="charts-grid">
+
+      <!-- Chart: Model Revenue -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <div>
+            <h3>Faturamento por Modelo</h3>
+            <div class="chart-subtitle">Top 10 modelos com maior receita</div>
+          </div>
+          <span class="chart-badge">TOP 10</span>
+        </div>
+        <div id="chart-model-revenue" class="bar-chart"></div>
+      </div>
+
+      <!-- Chart: Payment Methods -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <div>
+            <h3>Métodos de Pagamento</h3>
+            <div class="chart-subtitle">Distribuição das formas de pagamento</div>
+          </div>
+          <span class="chart-badge">DONUT</span>
+        </div>
+        <div id="chart-payment-donut"></div>
+      </div>
+
+      <!-- Chart: City-Model Heatmap -->
+      <div class="chart-card full-width">
+        <div class="chart-header">
+          <div>
+            <h3>Preferência de Modelos por Cidade</h3>
+            <div class="chart-subtitle">Concentração de vendas por família de modelo nas top 8 cidades</div>
+          </div>
+          <span class="chart-badge">HEATMAP</span>
+        </div>
+        <div id="chart-heatmap" class="heatmap-wrapper"></div>
+      </div>
+
+      <!-- Chart: Year Timeline -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <div>
+            <h3>Vendas por Ano do Modelo</h3>
+            <div class="chart-subtitle">Distribuição de vendas por faixa de ano</div>
+          </div>
+          <span class="chart-badge">TIMELINE</span>
+        </div>
+        <div id="chart-year-timeline" class="year-timeline"></div>
+      </div>
+
+      <!-- Chart: Ticket Médio Ranking -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <div>
+            <h3>Maior Ticket Médio</h3>
+            <div class="chart-subtitle">Modelos com maior valor médio por venda</div>
+          </div>
+          <span class="chart-badge">RANKING</span>
+        </div>
+        <div id="chart-ticket-ranking" class="ranking-list"></div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>Powered by <span class="footer-gold">Porsche</span> Sales Intelligence</p>
+    </footer>
+
+  </main>
+
+  <script>
+    // Set current date
+    document.getElementById('header-date').textContent = new Date().toLocaleDateString('pt-BR', {
+      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+    });
+  </script>
+  <script src="dashboard.js"></script>
+</body>
+</html>
